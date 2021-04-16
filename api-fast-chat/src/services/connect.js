@@ -3,13 +3,11 @@ const Pool = require('pg').Pool
 
 const credentials = {
     user: 'docker',
-    host: 'localhost',
+    host: 'db',
     password: 'docker',
     database: 'docker',
     port: 5432,
 }
-
-console.log(credentials, 'conection')
 const pool = new Pool(credentials)
 
 module.exports = pool
