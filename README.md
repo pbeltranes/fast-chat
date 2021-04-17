@@ -12,9 +12,76 @@ Source code:
 
 Crearemos una aplicación que cuenta con tres partes una base de datos relacional, una servidor y un cliente. A la base de datos se accederá directamente mediante consultas no existe un ORM o ODM que sea intermediario, en tanto en el lado del cliente se levantará una aplicación haciendo uso de React, Material-ui y Socket.io
 
+## Fichero
+
+
+```
+├── api-fast-chat
+│   ├── app.js
+│   ├── init.sql
+│   ├── package.json
+│   └── src
+│       ├── controllers
+│       │   └── chat.js
+│       ├── helpers
+│       │   └── queries.js
+│       ├── routes
+│       │   └── index.js
+│       └── services
+│           └── connect.js
+└── front-fast-chat
+    ├── package.json
+    ├── public
+    │   ├── index.html
+    │   ├── manifest.json
+    │   └── robots.txt
+    └── src
+        ├── App.css
+        ├── App.js
+        ├── App.test.js
+        ├── components
+        │   ├── Home.js
+        │   ├── MessageInput.js
+        │   ├── MessageList.js
+        │   └── Room.js
+        ├── index.css
+        ├── index.js
+        ├── logo.svg
+        ├── reportWebVitals.js
+        └── setupTests.js
+```
+
 
 ## Backend 
 
+Iniciando el proyecto en el backend, necesitamos generar nuestro `package.json`:
+
+```
+npm init -y  
+```
+
+Luego instalaremos `express`, `cors` ,`socket.io` y `http`.
+
+```
+npm install express cors socket.io http  --save
+```
+
+En el backend levantaremos una aplicación con express, la aplicación pdrá ocuparse tanto con protocolos http como por websocket. Elegimos además declarar el puerto por el cual se realiza la comunicación de nuestra app. puerto 8001.
+
+```javascript
+const express = require('express')
+const cors = require('cors')
+const app = express()
+const port = 8001
+```
+
+También haremos llamada a nuestro controllador  `chat.js` que funciona vía socket, el controlador lo tendremos creado en la ruta `/src/controllers/`.  la aplicación creada con `express` llamada `app` la montaremos sobre el protocolo http y generando el server que requerimos. Posteriormente generamos ciertas configuraciones como manejar express.json() y aceptar cors.
+
+Si no sabes que significa  express.urlencoded()  o express.json(). [Aquí una ayudita]( 
+https://www.it-swarm-es.com/es/javascript/que-son-express.json-y-express.urlencoded/1045862988/).
+
+
+Posteriormente reclararemos socket.io con nuestro server previamente creado, luego haremos que el server escuche desde el puerto 8001 mediante protocolo http, finalmente pero no menos importante declaramos nuestro controlador y le entregamos nuestro socket `io`.
 
 ```javascript
 // app.js
@@ -44,6 +111,17 @@ chatController(io)
 
 ```
 
+### Controladador 
+
+Nuestro controlador recibe como parametro 
+
+* `io.on ('connection', (socket) => {})`
+* `socket.join(roomId)`
+* `socket.on('SEND_LAST_10_FROM_CLIENT', () => {})`
+* `socket.on('NEW_MESSAGE_FROM_CLIENT', () => {})`
+
+
+
 ```javascript 
 // src/controllers/chat.js
 const db = require('../helpers/queries')
@@ -69,6 +147,8 @@ const chatController = (io) => {
 }
 module.exports = chatController
 ```
+
+
 
 ```javascript 
 // src/helpers/queries.js
