@@ -1,8 +1,7 @@
 # Fast Chat
 
+Esta guía muestra como crear un chat con `React` y `Socket.io`, esta última nos permite tener una comunicación instantánea entre clientes, además este chat tiene la particularidad de contar con una base de datos `postgres` en el servidor; El servidor es una aplicación simple en `Node` y `Express`.
 
-
-Haremos una aplicación de chat con una base de datos relación que se respaldará las conversaciónes que vayan siendo suministradas a las distintas salas de chat.
 
 Live demo:
 
